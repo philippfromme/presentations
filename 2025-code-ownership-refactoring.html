@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>From Chaos to Clarity: Code Ownership and Refactoring</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --r-background-color: #f4f4f4;
+      --r-main-font: IBM Plex Sans, sans-serif;
+      --r-main-font-size: 42px;
+      --r-main-color: #161616;
+      --r-block-margin: 20px;
+      --r-heading-margin: 0 0 20px 0;
+      --r-heading-font: IBM Plex Sans, sans-serif;
+      --r-heading-color: #161616;
+      --r-heading-line-height: 1.2;
+      --r-heading-letter-spacing: normal;
+      --r-heading-text-transform: uppercase;
+      --r-heading-text-shadow: none;
+      --r-heading-font-weight: 600;
+      --r-heading1-text-shadow: none;
+      --r-heading1-size: 2.5em;
+      --r-heading2-size: 1.6em;
+      --r-heading3-size: 1.3em;
+      --r-heading4-size: 1em;
+      --r-code-font: monospace;
+      --r-link-color: #0f62fe;
+      --r-link-color-dark: #0043ce;
+      --r-link-color-hover: #0043ce;
+      --r-selection-background-color: #fddc69;
+      --r-selection-color: #161616;
+      --r-overlay-element-bg-color: 0, 0, 0;
+      --r-overlay-element-fg-color: 240, 240, 240;
+    }
+
+    .reveal blockquote {
+      display: block;
+      position: relative;
+      width: 70%;
+      margin: var(--r-block-margin) auto;
+      padding: 5px;
+      font-style: italic;
+      /* background: #4589FF;
+      background: linear-gradient(90deg,rgba(69, 137, 255, 1) 0%, rgba(0, 67, 206, 1) 100%);
+      color: #f4f4f4; */
+      box-shadow: none;
+    }
+
+    .reveal .controls .controls-arrow:after, .reveal .controls .controls-arrow:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2.6em;
+      height: .5em;
+      border-radius: 0;
+      background-color: black;
+      transition: all .15s ease, background-color .8s ease;
+      transform-origin: .2em 50%;
+      will-change: transform;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 12px;
+      border-radius: 1000px;
+      background: #4589FF;
+      background: linear-gradient(90deg,rgba(69, 137, 255, 1) 0%, rgba(0, 67, 206, 1) 100%);
+      color: #f4f4f4;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h2>From Chaos to Clarity: <span class="pill">Code Ownership</span> and <span class="pill">Refactoring</span></h2>
+        <small>
+          <a href="https://github.com/philippfromme" target="_blank">Philipp Fromme, 2025</a>
+        </small>
+      </section>
+      <section>
+        <h2>Code Ownership</h2>
+        <blockquote>Responsibility for <span class="pill">quality</span> and <span class="pill">maintenance</span></blockquote>
+      </section>
+      <section>
+        <h2>Code Ownership Tips (1/2)</h2>
+        <ul>
+          <li>Promote a culture of ownership and continuous improvement.</li>
+          <li>Encourage developers to take pride in code quality and see debt reduction as part of their role.</li>
+          <li>Regular code reviews, pair programming, and knowledge-sharing sessions reinforce this mindset and distribute expertise more evenly across the team.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Code Ownership Tips (2/2)</h2>
+        <ul>
+          <li>You don't have to own everything!</li>
+          <li>Design extensible software with clear interfaces and boundaries so that new features don't always become your team's responsibility.</li>
+          <li>This allows other teams or contributors to build on your work without increasing your own maintenance burden.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Refactoring</h2>
+        <blockquote>Changes to the internal structure of code that improve its <span class="pill">readability</span>, <span class="pill">maintainability</span>, or <span class="pill">design</span> without changing its external behavior</blockquote>
+      </section>
+      <section>
+        <h2>Refactoring</h2>
+        <ul>
+          <li>Hard to sell to non-developers</li>
+          <li>As a developer you shouldn't have to sell refactorings—it's your job to just do them (99% of the time)</li>
+        </ul>
+      </section>
+      <section>
+        <h2><span class="pill">Consequences</span></h2>
+        <h4>...of not refactoring</h4>
+        <ul>
+          <li><strong>Broken Windows Effect:</strong> Visible signs of neglect (like unfinished migrations) can lead to further neglect and a culture of ignoring technical debt. <a href="https://blog.codinghorror.com/the-broken-window-theory/" target="_blank">Ref</a></li>
+          <li>Lowering of standards and increased technical debt: When small issues are left unaddressed, they signal to developers that low-quality solutions are acceptable.</li>
+          <li>This creates a feedback loop where the codebase quality steadily declines.</li>
+        </ul>
+      </section>
+      <section>
+        <h2><span class="pill">Consequences</span></h2>
+        <h4>...of not refactoring</h4>
+        <ul>
+          <li><strong>Tolerated Pain or "Annoyance Debt":</strong> Pain of the current state is acknowledged but not severe enough to justify prioritizing the fix over other work.</li>
+          <li>Cumulative productivity loss: Over time, these small annoyances add up, leading to recurring workarounds, slower development, and increased frustration.</li>
+        </ul>
+      </section>
+      <section>
+        <h2><span class="pill">Consequences</span></h2>
+        <h4>...of not finishing refactorings</h4>
+        <ul>
+          <li><strong>Zeigarnik Effect:</strong> Our brains remember uncompleted tasks more than finished ones, increasing cognitive load.</li>
+          <li><strong>Mental Fatigue:</strong> The unfinished task weighs on your mind, making it harder to focus on new projects.</li>
+        </ul>
+      </section>
+      <section>
+        <h2><span class="pill">Consequences</span></h2>
+        <h4>...of not finishing refactorings</h4>
+        <ul>
+          <li><strong>Motivation Drop:</strong> When a task seems nearly complete but remains incomplete, the final steps feel tedious and motivation drops.</li>
+          <li><strong>Increased Stress:</strong> The unfinished task causes stress until it's finally done.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Incremental Refactoring Pitfalls</h2>
+        <ul>
+          <li>Incremental refactorings should be preferred over big bang refactorings, BUT:</li>
+          <li>The team can lose <strong>momentum</strong>, leaving the system in a prolonged hybrid state.</li>
+          <li>This creates <strong>ongoing maintenance burdens</strong> as both old and new systems must be supported.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Bike Shedding</h2>
+        <ul>
+          <li>Doing the hard and meaningful refactorings is avoided by <a href="https://en.wikipedia.org/wiki/Law_of_triviality" target="_blank">bike-shedding</a>.</li>
+          <li>Example: focusing on dependency updates instead of necessary architectural improvements.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Refactoring Tips (1/2)</h2>
+        <ul>
+          <li><strong>Finish what you start:</strong> Unfinished refactorings create cognitive load, stress, and maintenance burdens—always complete your refactoring tasks, or at least have a clear plan and track progress if they will take a long time.</li>
+          <li><strong>Refactor incrementally, but avoid prolonged hybrid states:</strong> Small, incremental changes are safer, but leaving the codebase half-migrated increases complexity and maintenance effort.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Refactoring Tips (2/2)</h2>
+        <ul>
+          <li><strong>Don't fix what isn't broken, prioritize based on impact:</strong> Focus refactoring on areas that genuinely need improvement.</li>
+          <li><strong>Watch for “bike-shedding”:</strong> Don't get distracted by trivial changes at the expense of meaningful architectural improvements.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Conclusion</h2>
+        <ul>
+          <li><span class="pill">Ownership</span> and <span class="pill">refactoring</span> are essential for maintaining a healthy codebase.</li>
+          <li>Promote a culture of <span class="pill">ownership</span>, <span class="pill">continuous improvement</span>, and <span class="pill">clear communication</span>.</li>
+          <li><span class="pill">Finish what you start</span>, prioritize effectively, and avoid bike-shedding.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <!-- Reveal.js JS -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
+  <script>
+    Reveal.initialize();
+  </script>
+</body>
+</html>
