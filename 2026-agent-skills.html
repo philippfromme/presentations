@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Skill issues? Try agent skills!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+      background: #0a0a0a;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; line-height: 1.4;
+    }
+
+    /* Slide */
+    .slide {
+      position: fixed; inset: 0; display: none; overflow: hidden;
+      background: var(--bg); color: var(--fg);
+    }
+    .slide.active { display: block; }
+    .slide.padded { padding: 64px 80px; }
+    .slide.bg-dark { --bg: #0a0a0a; --fg: #fafafa; --border: #2a2a2a; }
+
+    a { color: inherit; text-decoration: underline; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    pre { background: transparent; color: inherit; padding: 0; margin: 0; overflow: auto; }
+    h2 { font-size: 2.4em; line-height: 1; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 24px 0; }
+
+    /* Stage: full-height flex container with slide padding */
+    .stage              { height: 100%; display: flex; padding: 64px 80px; }
+    .stage.center       { align-items: center; justify-content: center; }
+    .stage.bottom       { align-items: flex-end; }
+    .stage.col          { flex-direction: column; justify-content: center; }
+    .stage.col.end      { justify-content: flex-end; }
+    .stage.col.between  { justify-content: space-between; }
+    .stage.col.middle   { align-items: center; }
+    .stage.gap-16       { gap: 16px; }
+    .stage.gap-32       { gap: 32px; }
+    .stage.gap-40       { gap: 40px; }
+
+    /* Type */
+    .t-xl       { font-weight: 600; font-size: 4em;   line-height: 0.95; letter-spacing: -0.01em; }
+    .t-lg       { font-weight: 600; font-size: 3em;   line-height: 0.95; letter-spacing: -0.01em; }
+    .t-lg.tall  { line-height: 1.05; }
+    .t-md       { font-weight: 700; font-size: 2.4em; line-height: 1;    letter-spacing: -0.02em; }
+    .t-year     { font-weight: 700; font-size: 6em;   line-height: 1;    letter-spacing: -0.02em; }
+    .t-year.xl  { font-size: 8em; }
+    .t-lede     { font-size: 1em;   font-weight: 600; }
+    .t-body     { font-size: 0.9em; line-height: 1.6; }
+    .t-note     { font-size: 0.7em; line-height: 1.6; }
+    .t-label    { font-size: 0.7em; }
+    .t-label.bold { font-weight: 600; }
+    .t-cap      { font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* Code blocks */
+    .code        { text-align: left; line-height: 1.7; margin: 0; font-size: 0.7em; }
+    .code.sm     { font-size: 0.55em; line-height: 1.8; }
+    .code.lg     { font-size: 0.75em; }
+    .code.tight  { line-height: 1.4; }
+    .code.wrap   { white-space: pre-wrap; }
+
+    .progress {
+      position: fixed; bottom: 12px; right: 16px;
+      font-size: 12px; color: #fff; z-index: 1000;
+      pointer-events: none; mix-blend-mode: difference;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 1. Title -->
+<section class="slide bg-dark">
+  <div class="stage col end gap-16">
+    <div class="t-xl">Skill issues?</div>
+    <div class="t-xl">/use-skills</div>
+  </div>
+</section>
+
+<!-- 2. Thesis -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-xl">
+      It's all just <a href="https://platform.claude.com/docs/en/build-with-claude/context-windows">context</a>.
+    </div>
+  </div>
+</section>
+
+<!-- 4. What the model actually receives -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code"><code>{
+  "model": "claude-opus-4-7",
+  "messages": [...]          ← text
+  "system": "..."            ← also text
+  "tools": [...]             ← also text (JSON schemas)
+  <span>"temperature": 1.0         ← sampling parameter</span>
+  <span>"top_p": 0.95              ← sampling parameter</span>
+  <span>"top_k": 40                ← sampling parameter</span>
+  <span>"max_tokens": 4096         ← sampling parameter</span>
+  <span>"stop_sequences": [...]    ← sampling parameter</span>
+}</code></pre>
+  </div>
+</section>
+
+<!-- 4b. Quality vs context size -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code tight"><code>quality
+  ▲
+  │      ╱─────╲
+  │    ╱         ╲___
+  │  ╱                ╲___
+  │╱                       ╲___
+  └────────────────────────────▶  context size
+        sweet spot       too much</code></pre>
+  </div>
+</section>
+
+<!-- 5. Less context = better output -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div></div>
+    <div>
+      <div class="t-xl">Less context = Better output</div>
+    </div>
+    <div class="t-cap">
+      — <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Anthropic, Effective context engineering for AI agents</a>
+    </div>
+  </div>
+</section>
+
+<!-- 5b. Context = money -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div></div>
+    <div>
+      <div class="t-xl">Context = Money</div>
+    </div>
+    <div class="t-cap">
+      — <a href="https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing#model-multipliers-for-annual-copilot-pro-and-copilot-pro-subscribers">GitHub Copilot pricing</a>
+    </div>
+  </div>
+</section>
+
+<!-- 6a. 2023 -->
+<section class="slide bg-dark">
+  <div class="stage col gap-40">
+    <div class="t-year">2023</div>
+    <div class="t-lede">"Put it in the prompt."</div>
+    <div class="t-note">
+      <strong>Lands in:</strong> system<br>
+      <strong>What broke:</strong> "lost in the middle" — instructions buried in long prompts silently stopped being followed.
+    </div>
+  </div>
+</section>
+
+<!-- 6b. 2024 -->
+<section class="slide bg-dark">
+  <div class="stage col gap-40">
+    <div class="t-year">2024</div>
+    <div class="t-lede">"Tools as JSON schemas."</div>
+    <div class="t-note">
+      <strong>Lands in:</strong> tools<br>
+      <strong>What broke:</strong> too many tools → model picks the wrong one. Schemas count against context.
+    </div>
+  </div>
+</section>
+
+<!-- 6c. late 2024 -->
+<section class="slide bg-dark">
+  <div class="stage col gap-40">
+    <div class="t-year">late 2024</div>
+    <div class="t-lede">"CLAUDE.md / .cursorrules / AGENTS.md"</div>
+    <div class="t-note">
+      <strong>Lands in:</strong> system (same slot!)<br>
+      <strong>What broke:</strong> files grew unbounded, paid every turn, buried rules stopped firing.
+    </div>
+  </div>
+</section>
+
+<!-- 6d. 2025 -->
+<section class="slide bg-dark">
+  <div class="stage col gap-40">
+    <div class="t-year">2025</div>
+    <div class="t-lede">"MCP — connect everything!"</div>
+    <div class="t-note">
+      <strong>Lands in:</strong> tools (same slot!)<br>
+      <strong>What broke:</strong> 134K tokens of tool defs before the user says hello.
+    </div>
+  </div>
+</section>
+
+<!-- 6e. Oct 2025 -->
+<section class="slide bg-dark">
+  <div class="stage col gap-40">
+    <div class="t-year">Oct 2025</div>
+    <div class="t-lede">"Skills — load on demand."</div>
+    <div class="t-note">
+      <strong>Lands in:</strong> system (descriptions), messages (bodies)<br>
+      <strong>What broke:</strong> descriptions are fuzzy triggers — they misfire either way. Bodies still drift.
+    </div>
+  </div>
+</section>
+
+<!-- 6f. 2026 ? -->
+<section class="slide bg-dark">
+  <div class="stage col middle">
+    <div class="t-year xl">2026 ?</div>
+  </div>
+</section>
+
+<!-- 7a. What is a Skill? -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">
+      What is a <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview">Skill</a>?
+    </div>
+  </div>
+</section>
+
+<!-- 7b. The folder -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code"><code>a11y-audit/
+└── SKILL.md</code></pre>
+  </div>
+</section>
+
+<!-- 7c. The SKILL.md -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code"><code><span>───</span>
+name: a11y-audit
+description: Use when the user asks to
+  audit accessibility of a component or
+  page. Do NOT use for visual design or
+  general code review.
+<span>───</span>
+
+# Accessibility audit
+
+## Workflow
+1. Render the component or load the URL
+2. Run <span>scripts/run-axe.sh</span> for violations
+3. Run <span>scripts/keyboard-trace.sh</span> for focus order
+4. Cross-check against <span>references/wcag-2.2.md</span>
+5. Group issues by WCAG level (A / AA / AAA)</code></pre>
+  </div>
+</section>
+
+<!-- 8a. When does a skill enter the context? -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">When does a skill enter the context?</div>
+  </div>
+</section>
+
+<!-- 8b. Automatic -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-md">Automatically.</div>
+    <div class="t-body">
+      The model sees the skill's <strong>name + description</strong> in the system prompt.<br>
+      When the user's request matches, the full <strong>SKILL.md body</strong> gets loaded.
+    </div>
+  </div>
+</section>
+
+<!-- 8c. Automatic — example -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code"><code><span>user:</span> audit a11y on the checkout modal
+<span>→ matches description of a11y-audit</span>
+<span>→ load SKILL.md body</span></code></pre>
+  </div>
+</section>
+
+<!-- 8d. Explicit -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-md">Explicitly.</div>
+    <div class="t-body">
+      Invoke the skill by name with a slash command.<br>
+      Skips the routing — loads <strong>immediately</strong>.
+    </div>
+  </div>
+</section>
+
+<!-- 8e. Explicit — example -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code"><code><span>user:</span> /a11y-audit Modal.tsx
+<span>→ load SKILL.md body</span></code></pre>
+  </div>
+</section>
+
+<!-- 9a. There's more -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">There's more.</div>
+  </div>
+</section>
+
+<!-- 9b. The full skill -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code"><code>a11y-audit/
+├── SKILL.md
+├── references/
+│   ├── wcag-2.2.md
+│   ├── aria-patterns.md
+│   └── common-fixes.md
+└── scripts/
+    ├── run-axe.sh
+    └── keyboard-trace.sh</code></pre>
+  </div>
+</section>
+
+<!-- 9c. What is loaded when? -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">More context?</div>
+  </div>
+</section>
+
+<!-- 9d. Answer: only what's needed -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <pre class="code sm"><code><span>always:</span>     name + description    <span>~100 tokens</span>
+<span>on match:</span>   SKILL.md body         <span>&lt; 5K tokens</span>
+<span>on demand:</span>  references/*.md       <span>only when SKILL.md says to</span>
+<span>on demand:</span>  scripts/*.sh          executed — code never enters context</code></pre>
+    <div class="t-label bold">Each level loads only when the previous one says to.</div>
+  </div>
+</section>
+
+<!-- 10a. a11y-audit in action -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">a11y-audit in action.</div>
+  </div>
+</section>
+
+<!-- 10b. The sequence -->
+<section class="slide bg-dark">
+  <div class="stage center">
+    <pre class="code lg"><code><span># startup</span>
+system:  a11y-audit — audit accessibility of a component or page
+         <span>~100 tokens. that's all.</span>
+
+user:    audit a11y on the checkout Modal
+
+claude:  cat a11y-audit/SKILL.md
+         <span>→ instructions enter context</span>
+
+claude:  ./a11y-audit/scripts/run-axe.sh Modal
+         <span>→ 4 violations (JSON). script code never enters context.</span>
+
+claude:  cat a11y-audit/references/wcag-2.2.md
+         <span>→ cross-check violations</span>
+
+<span># aria-patterns.md, common-fixes.md — not needed here.</span>
+<span># never loaded. zero tokens.</span></code></pre>
+  </div>
+</section>
+
+<!-- 11a. Do skills actually work? -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">Do skills actually work?</div>
+  </div>
+</section>
+
+<!-- 11a2. Yes* -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">Yes*</div>
+  </div>
+</section>
+
+<!-- 11b. Deep -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-label">Deep</div>
+    <pre class="code lg wrap"><code>Design tokens live in src/tokens/. Spacing uses a 4px base grid.
+Never use raw pixel values — always var(--space-{n}).
+The Overlay component traps focus and restores it on close;
+new modals MUST use it, not div with z-index.</code></pre>
+  </div>
+</section>
+
+<!-- 11b2. Shallow -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-label">Shallow</div>
+    <pre class="code lg wrap"><code>Ensure proper ARIA labels, keyboard navigation, and focus management.
+Prefer &lt;button&gt; over &lt;div&gt;. Test with keyboard-only navigation.</code></pre>
+    <div class="t-label">Sounds expert. It's still just MDN.</div>
+  </div>
+</section>
+
+<!-- 11c. The data -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <pre class="code lg"><code><a href="https://arxiv.org/html/2602.12670v1">SkillsBench</a>          curated, deep skills        +16.2pp
+                     self-generated shallow      <span>−1.3pp</span>
+
+<a href="https://arxiv.org/html/2604.04323v1">Skills in the Wild</a>   34k random skills           <span>worse than none</span></code></pre>
+    <div class="t-label">Breadth without depth is noise.</div>
+  </div>
+</section>
+
+<!-- 11d. Takeaway -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg tall">
+      Write few. Write deep.<br>
+      Write what the model can't guess.
+    </div>
+  </div>
+</section>
+
+<!-- 13. Resources -->
+<section class="slide bg-dark padded">
+  <h2>Resources</h2>
+  <ul class="t-label">
+    <li><a href="https://agentskills.io/home">Agent skills specification</a></li>
+    <li><a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview">Anthropic's skills documentation</a></li>
+    <li><a href="https://skills.sh/">skills.sh</a> — Over 90000 skills</li>
+    <li><a href="https://arxiv.org/html/2602.12670v1">SkillsBench</a> (Li et al., 2026) — Benchmarking agent skills</li>
+    <li><a href="https://arxiv.org/html/2604.04323v1">Skills in the Wild</a> (Liu et al., 2026) — Real-world skill retrieval</li>
+    <li><a href="https://redis.io/blog/context-rot/">Context rot</a></li>
+    <li><a href="https://www.humanlayer.dev/blog/long-context-isnt-the-answer">Long context isn't the answer</a></li>
+  </ul>
+</section>
+
+<div class="progress" id="progress"></div>
+<script>
+(function () {
+  var slides = document.querySelectorAll('.slide');
+  var progress = document.getElementById('progress');
+  var idx = 0;
+
+  function show(n) {
+    if (n < 0) n = 0;
+    if (n >= slides.length) n = slides.length - 1;
+    slides[idx].classList.remove('active');
+    slides[n].classList.add('active');
+    idx = n;
+    progress.textContent = (idx + 1) + ' / ' + slides.length;
+    if (location.hash !== '#' + (idx + 1)) {
+      history.replaceState(null, '', '#' + (idx + 1));
+    }
+  }
+
+  function fromHash() {
+    var n = parseInt((location.hash || '#1').slice(1), 10);
+    if (isNaN(n) || n < 1) n = 1;
+    show(n - 1);
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      show(idx + 1); e.preventDefault();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
+      show(idx - 1); e.preventDefault();
+    } else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+  });
+
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>
