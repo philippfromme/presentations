@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AI and skill</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+      background: #0a0a0a;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; line-height: 1.4;
+    }
+
+    /* Slide */
+    .slide {
+      position: fixed; inset: 0; display: none; overflow: hidden;
+      background: var(--bg); color: var(--fg);
+    }
+    .slide.active { display: block; }
+    .slide.padded { padding: 64px 80px; }
+    .slide.bg-dark { --bg: #0a0a0a; --fg: #fafafa; --border: #2a2a2a; }
+
+    a { color: inherit; text-decoration: underline; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    pre { background: transparent; color: inherit; padding: 0; margin: 0; overflow: auto; }
+    h2 { font-size: 2.4em; line-height: 1; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 24px 0; }
+
+    /* Stage: full-height flex container with slide padding */
+    .stage              { height: 100%; display: flex; padding: 64px 80px; }
+    .stage.center       { align-items: center; justify-content: center; }
+    .stage.bottom       { align-items: flex-end; }
+    .stage.col          { flex-direction: column; justify-content: center; }
+    .stage.col.end      { justify-content: flex-end; }
+    .stage.col.between  { justify-content: space-between; }
+    .stage.col.middle   { align-items: center; }
+    .stage.gap-16       { gap: 16px; }
+    .stage.gap-32       { gap: 32px; }
+    .stage.gap-40       { gap: 40px; }
+
+    /* Type */
+    .t-xxxl       { font-weight: 600; font-size: 8em;   line-height: 0.95; letter-spacing: -0.01em; }
+    .t-xxl       { font-weight: 600; font-size: 6em;   line-height: 0.95; letter-spacing: -0.01em; }
+    .t-xl       { font-weight: 600; font-size: 4em;   line-height: 0.95; letter-spacing: -0.01em; }
+    .t-lg       { font-weight: 600; font-size: 3em;   line-height: 0.95; letter-spacing: -0.01em; }
+    .t-lg.tall  { line-height: 1.05; }
+    .t-md       { font-weight: 700; font-size: 2.4em; line-height: 1;    letter-spacing: -0.02em; }
+    .t-year     { font-weight: 700; font-size: 6em;   line-height: 1;    letter-spacing: -0.02em; }
+    .t-year.xl  { font-size: 8em; }
+    .t-lede     { font-size: 1em;   font-weight: 600; }
+    .t-body     { font-size: 0.9em; line-height: 1.6; }
+    .t-note     { font-size: 0.7em; line-height: 1.6; }
+    .t-label    { font-size: 0.7em; }
+    .t-label.bold { font-weight: 600; }
+    .t-cap      { font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* Strikethrough helper */
+    .strike { text-decoration: line-through; }
+    .dim    { opacity: 0.5; }
+
+    /* Code blocks */
+    .code        { text-align: left; line-height: 1.7; margin: 0; font-size: 0.7em; }
+    .code.sm     { font-size: 0.55em; line-height: 1.8; }
+    .code.lg     { font-size: 0.75em; }
+    .code.tight  { line-height: 1.4; }
+    .code.wrap   { white-space: pre-wrap; }
+
+    .progress {
+      position: fixed; bottom: 12px; right: 16px;
+      font-size: 12px; color: #fff; z-index: 1000;
+      pointer-events: none; mix-blend-mode: difference;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 1. Title -->
+<section class="slide bg-dark">
+  <div class="stage col end gap-16">
+    <div class="t-xxl">AI and <span class="strike">ch</span>skill</div>
+  </div>
+</section>
+
+<!-- 2. Format -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-md tall">5 findings — 5 questions</div>
+  </div>
+</section>
+
+<!-- 3. Agenda -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-md tall">
+      1 — Cognitive debt<br>
+      2 — Cognitive surrender<br>
+      3 — Skill formation<br>
+      4 — Skill atrophy<br>
+      5 — Brain fry
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1. COGNITIVE DEBT ============ -->
+
+<!-- 1.0 Divider -->
+<section class="slide bg-dark">
+  <div class="stage col gap-16">
+    <div class="t-year">01</div>
+    <div class="t-xl">Cognitive debt</div>
+    <div class="t-body dim">The accumulating loss of understanding you take on when AI produces work you never actually grasp.</div>
+  </div>
+</section>
+
+<!-- 1.1 What it is -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">The hidden cost of letting the model do the thinking.</div>
+    <div class="t-body">
+      Coined by MIT Media Lab's EEG study <em>"Your Brain on ChatGPT."</em> The LLM group showed the weakest brain connectivity of the three groups, the lowest sense of ownership of their work, and couldn't quote essays they'd written minutes earlier.
+    </div>
+    <div class="t-cap">— <a href="https://arxiv.org/abs/2506.08872">Kosmyna et al., arXiv:2506.08872</a></div>
+  </div>
+</section>
+
+<!-- 1.2 Team level -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">At team level: nobody can explain how the system works.</div>
+    <div class="t-body">
+      GenAI can pay down <strong>technical</strong> debt while running up <strong>cognitive</strong> debt. Invisible until changes start failing — surprising side effects, slow onboarding, low bus factor.
+    </div>
+    <div class="t-cap">— <a href="https://queue.acm.org/detail.cfm?id=3746117">Storey, ACM Queue</a></div>
+  </div>
+</section>
+
+<!-- 1.3 Discuss -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div class="t-cap">↓ your turn</div>
+    <div class="t-lg tall">Do we ship code we understand, or code that works?</div>
+  </div>
+</section>
+
+<!-- ============ 2. COGNITIVE SURRENDER ============ -->
+
+<!-- 2.0 Divider -->
+<section class="slide bg-dark">
+  <div class="stage col gap-16">
+    <div class="t-year">02</div>
+    <div class="t-xl">Cognitive surrender</div>
+    <div class="t-body dim">Handing your judgment to the AI and accepting its answer without checking whether it's right.</div>
+  </div>
+</section>
+
+<!-- 2.1 What it is -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">System 3: thinking, outsourced.</div>
+    <div class="t-body">
+      Shaw &amp; Nave extend Kahneman — System 1 (intuition), System 2 (deliberation), <strong>System 3</strong> (the AI). Surrender = taking System 3's answer with little scrutiny, muting <em>both</em> your own systems. Not offloading a task — abdicating the judgment of whether it's even right.
+    </div>
+    <div class="t-cap">— <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6097646">Shaw &amp; Nave, Tri-System Theory (SSRN)</a></div>
+  </div>
+</section>
+
+<!-- 2.2 Evidence -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">People follow the AI even when it's wrong.</div>
+    <div class="t-body">
+      3 experiments, N&nbsp;=&nbsp;1,372. When the AI was wrong, people followed it anyway on <strong>~4 of 5</strong> trials — accuracy fell below the no-AI baseline. Worse: having the AI raised their <em>confidence</em>, even when its answers were wrong.
+    </div>
+    <div class="t-cap">— <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6097646">Shaw &amp; Nave (SSRN)</a></div>
+  </div>
+</section>
+
+<!-- 2.3 Discuss -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div class="t-cap">↓ your turn</div>
+    <div class="t-lg tall">When do you accept AI output without really checking it?</div>
+  </div>
+</section>
+
+<!-- ============ 3. SKILL FORMATION ============ -->
+
+<!-- 3.0 Divider -->
+<section class="slide bg-dark">
+  <div class="stage col gap-16">
+    <div class="t-year">03</div>
+    <div class="t-xl">Skill formation</div>
+    <div class="t-body dim">How AI changes whether you actually build expertise while learning something new.</div>
+  </div>
+</section>
+
+<!-- 3.1 What it is -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">Learning with AI: not faster, and worse.</div>
+    <div class="t-body">
+      Developers learned a new async library (Trio) with or without AI. The AI group scored <strong>~17% lower</strong> on comprehension — and weren't significantly faster. Biggest gaps: code reading and <strong>debugging</strong>, the very skills you need to supervise AI.
+    </div>
+    <div class="t-cap">— <a href="https://arxiv.org/abs/2601.20245">Shen &amp; Tamkin, arXiv:2601.20245</a></div>
+  </div>
+</section>
+
+<!-- 3.2 How you use it -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">How you use AI matters more than whether you use it.</div>
+    <div class="t-body">
+      Low scorers delegated. High scorers stayed engaged — asked why, generated-then-read. It's effort of <em>mind</em>, not fingers: typing the code by hand vs pasting it made <strong>no difference</strong>.
+    </div>
+    <div class="t-cap">— <a href="https://arxiv.org/abs/2601.20245">Shen &amp; Tamkin (arXiv)</a></div>
+  </div>
+</section>
+
+<!-- 3.3 Discuss -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div class="t-cap">↓ your turn</div>
+    <div class="t-lg tall">Are we getting better, or just getting more done?</div>
+  </div>
+</section>
+
+<!-- ============ 4. SKILL ATROPHY ============ -->
+
+<!-- 4.0 Divider -->
+<section class="slide bg-dark">
+  <div class="stage col gap-16">
+    <div class="t-year">04</div>
+    <div class="t-xl">Skill atrophy</div>
+    <div class="t-body dim">The skills you already have decaying because AI does the reps you used to do yourself.</div>
+  </div>
+</section>
+
+<!-- 4.1 What it is -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">Use it or lose it — and AI makes it easy not to use it.</div>
+    <div class="t-body">
+      319 knowledge workers: higher trust in AI predicted <strong>less</strong> critical thinking. Bainbridge's <em>Ironies of Automation</em> — automate the task and the human's skill decays, yet they're kept on to take over exactly the hard cases the automation can't handle.
+    </div>
+    <div class="t-cap">— <a href="https://www.microsoft.com/en-us/research/publication/the-impact-of-generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-confidence-effects-from-a-survey-of-knowledge-workers/">Lee et al., CHI 2025</a> · <a href="https://www.ise.ncsu.edu/wp-content/uploads/2017/02/Bainbridge_1983_Automatica.pdf">Bainbridge, 1983</a></div>
+  </div>
+</section>
+
+<!-- 4.2 Exoskeleton -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">AI is an exoskeleton — the gains vanish when it's removed.</div>
+    <div class="t-body">
+      Performance boosts on writing and technical tasks disappeared when workers later worked unaided: the underlying skill was never built. And novices — who get the biggest boost — have the most to lose.
+    </div>
+    <div class="t-cap">— <a href="https://arxiv.org/abs/2601.20245">Shen &amp; Tamkin (arXiv)</a></div>
+  </div>
+</section>
+
+<!-- 4.3 Discuss -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div class="t-cap">↓ your turn</div>
+    <div class="t-lg tall">Which of your skills have quietly gotten rusty?</div>
+  </div>
+</section>
+
+<!-- ============ 5. BRAIN FRY ============ -->
+
+<!-- 5.0 Divider -->
+<section class="slide bg-dark">
+  <div class="stage col gap-16">
+    <div class="t-year">05</div>
+    <div class="t-xl">Brain fry</div>
+    <div class="t-body dim">The acute mental exhaustion that comes from supervising AI, not from doing the work.</div>
+  </div>
+</section>
+
+<!-- 5.1 What it is -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">Overseeing AI fries your brain.</div>
+    <div class="t-body">
+      Watching and double-checking an agent costs <strong>more</strong> mental effort than doing the task yourself — <strong>+14%</strong> effort, <strong>+19%</strong> information overload. Symptoms: a "fog," lost focus, slower decisions, headaches. 14% of AI users report it.
+    </div>
+    <div class="t-cap">— <a href="https://hbr.org/2026/03/when-using-ai-leads-to-brain-fry">Bedard et al., HBR/BCG</a></div>
+  </div>
+</section>
+
+<!-- 5.2 Costs -->
+<section class="slide bg-dark">
+  <div class="stage col gap-32">
+    <div class="t-lg tall">More tools isn't better past a point.</div>
+    <div class="t-body">
+      Productivity dips after ~3 simultaneous tools. Among those frying: <strong>+39%</strong> major errors, intent to quit jumped 25% → 34% — often the heaviest users are top talent. But replacing toil <em>lowered</em> burnout ~15%, and supportive managers cut fatigue 15%.
+    </div>
+    <div class="t-cap">— <a href="https://hbr.org/2026/03/when-using-ai-leads-to-brain-fry">Bedard et al. (HBR)</a></div>
+  </div>
+</section>
+
+<!-- 5.3 Discuss -->
+<section class="slide bg-dark">
+  <div class="stage col between">
+    <div class="t-cap">↓ your turn</div>
+    <div class="t-lg tall">When does AI stop helping and start frying you?</div>
+  </div>
+</section>
+
+<!-- ============ CLOSE ============ -->
+
+<!-- Thread -->
+<section class="slide bg-dark">
+  <div class="stage bottom">
+    <div class="t-lg">Let AI do the <span class="strike">th</span>typing<br>You do the thinking.</div>
+  </div>
+</section>
+
+<!-- Resources -->
+<section class="slide bg-dark padded">
+  <h2>Resources</h2>
+  <ul class="t-label">
+    <li><a href="https://arxiv.org/abs/2506.08872">Your Brain on ChatGPT</a> — Kosmyna et al. (MIT Media Lab)</li>
+    <li><a href="https://queue.acm.org/detail.cfm?id=3746117">From Technical Debt to Cognitive and Intent Debt</a> — Storey (ACM Queue)</li>
+    <li><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6097646">Tri-System Theory</a> — Shaw &amp; Nave (SSRN)</li>
+    <li><a href="https://arxiv.org/abs/2601.20245">How AI Impacts Skill Formation</a> — Shen &amp; Tamkin</li>
+    <li><a href="https://www.microsoft.com/en-us/research/publication/the-impact-of-generative-ai-on-critical-thinking-self-reported-reductions-in-cognitive-effort-and-confidence-effects-from-a-survey-of-knowledge-workers/">The Impact of Generative AI on Critical Thinking</a> — Lee et al. (CHI 2025)</li>
+    <li><a href="https://www.ise.ncsu.edu/wp-content/uploads/2017/02/Bainbridge_1983_Automatica.pdf">Ironies of Automation</a> — Bainbridge (1983)</li>
+    <li><a href="https://hbr.org/2026/03/when-using-ai-leads-to-brain-fry">When Using AI Leads to "Brain Fry"</a> — Bedard et al. (HBR/BCG)</li>
+  </ul>
+</section>
+
+<div class="progress" id="progress"></div>
+<script>
+(function () {
+  var slides = document.querySelectorAll('.slide');
+  var progress = document.getElementById('progress');
+  var idx = 0;
+
+  function show(n) {
+    if (n < 0) n = 0;
+    if (n >= slides.length) n = slides.length - 1;
+    slides[idx].classList.remove('active');
+    slides[n].classList.add('active');
+    idx = n;
+    progress.textContent = (idx + 1) + ' / ' + slides.length;
+    if (location.hash !== '#' + (idx + 1)) {
+      history.replaceState(null, '', '#' + (idx + 1));
+    }
+  }
+
+  function fromHash() {
+    var n = parseInt((location.hash || '#1').slice(1), 10);
+    if (isNaN(n) || n < 1) n = 1;
+    show(n - 1);
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      show(idx + 1); e.preventDefault();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
+      show(idx - 1); e.preventDefault();
+    } else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+  });
+
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>
